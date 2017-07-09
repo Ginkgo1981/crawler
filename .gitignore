@@ -15,7 +15,6 @@
 !/tmp/.keep
 
 .byebug_history
-/bin/*
 /log/**
 .idea/**
 
