@@ -4,24 +4,9 @@ default: &DEFAULTS
 
 development:
   <<: *DEFAULTS
-  namespace: skymatters_dev
+  namespace: skymatters
 
 production:
   <<: *DEFAULTS
-  namespace: skymatters_prod
+  namespace: skymatters
 
-production:
-  <<: *DEFAULTS
-  namespace: skymatters_alicloud
-
-demo:
-  <<: *DEFAULTS
-  namespace: skymatters_demo
-
-staing:
-  <<: *DEFAULTS
-  namespace: skymatters_stag
-
-test:
-  <<: *DEFAULTS
-  namespace: skymatters_test
