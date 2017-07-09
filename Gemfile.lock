@@ -180,7 +180,7 @@ DEPENDENCIES
   annotate!
   elasticsearch
   faraday
-  listen (~> 3.0.5)
+  listen
   mechanize
   mina (~> 0.3.8)
   mina-sidekiq

@@ -15,7 +15,7 @@ gem 'puma', '~> 3.0'
 
 gem 'mechanize'
 gem 'nokogiri'
-
+gem 'listen'
 
 gem 'elasticsearch'
 
