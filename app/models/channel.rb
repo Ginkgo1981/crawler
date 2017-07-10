@@ -16,24 +16,19 @@
 class Channel < ApplicationRecord
   belongs_to :site
 
-
-  def get_and_enqueue_links
+  def enqueue_links
     analyzer = self.analyzer.constantize.new
     link_urls = analyzer.get_links(self.url)
     link_urls.each do |url|
-      if $redis.sismember 'link_urls', url
-        puts "[channel] enqueue-link exsit url #{url}"
+      cache_url = url.scan(/91job/) ? url.split(/\//)[-1] : url
+      if $redis.sismember 'cache_urls', cache_url
+        puts "[channel] enqueue hit-cache 0 '#{cache_url}'"
       else
-        $redis.sadd 'link_urls', url #cache
+        $redis.sadd 'cache_urls', cache_url #cache
         $redis.zadd 'link_queue', 100, url #queue
-        puts "[channel] enqueue-link succ url #{url}"
+        puts "[channel] enqueue #{site.name} 0 '#{url}'"
       end
     end
   end
-
-
-
-
-
 
 end

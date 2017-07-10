@@ -22,7 +22,12 @@ class Analyzer
 
 
   def sink entity
-    $redis.zadd 'company_job_json_queue', 100, entity.to_json #queue
+    begin
+      $redis.zadd 'company_job_json_queue', 100, entity.to_json #queue
+      puts "[analyzer] sink #{self.to_s} 0 '#{entity.to_json}'"
+    rescue Exception => e
+      puts "[analyzer] sink error 0 ''"
+    end
     # $es.index index: 'crawler', type: 'company_job', body: entity
   end
 
