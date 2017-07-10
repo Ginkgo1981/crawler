@@ -1,7 +1,7 @@
 namespace :channel do
   desc 'read from channel, then enqueue links '
   task enqueue_links: :environment do
-    Channel.all.include(:site).each do |channel|
+    Channel.all.preload(:site).each do |channel|
       puts "[channel] process channel 0 '#{channel.url}'"
       channel.enqueue_links
     end
