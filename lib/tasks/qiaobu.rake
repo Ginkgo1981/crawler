@@ -26,9 +26,7 @@ namespace :qiaobu do
 
   desc "extract_honors"
   task extract_honors: :environment do
-
     HonorTip.destroy_all
-
     url = 'http://cv.qiaobutang.com/rest/app/career/honors/tips.json?at=1499525434738&resolution=4x&sig=6408d299b9db76075a4245b91f085095&uid=57d180030cf2123d500195a9&v=13'
     uri = URI url
     agent = Mechanize.new
@@ -41,10 +39,6 @@ namespace :qiaobu do
       HonorTip.create! name: name, tips: item['tips']
     end
   end
-
-
-
-
 
   desc "extract_interest_tags"
   task extract_interest_tags: :environment do
@@ -185,9 +179,7 @@ namespace :qiaobu do
       industry = Industry.find_by uuid: uuid
       puts 'industry: '
       puts industry.name
-
       JSON(page.body)['modelessays'].each do |m|
-
         e = Experience.find_by title: m['title']
         if e.nil?
           pp m['title']
@@ -198,14 +190,76 @@ namespace :qiaobu do
                              content: m['content']
 
         end
-
       end
-
-
     end
-
-
   end
+
+
+  desc 'export_benefits_to_file'
+  task export_benefits_to_file: :environment do
+    File.open('features/benefits.txt', 'w') do |file|
+      Benefit.all.each do |b|
+        b.name.split(/\、/).each { |w| file.puts w } if b.name
+      end
+    end
+  end
+
+
+  desc 'export_skills_to_file'
+  task export_skills_to_file: :environment do
+    File.open('features/skills.txt', 'w') do |file|
+      Skill.all.each do |b|
+        b.name.split(/[\、\，]/).each { |w| file.puts(w) if w } if b.name
+      end
+    end
+  end
+
+
+  desc 'export_categories_to_file'
+  task export_categories_to_file: :environment do
+    File.open('features/categories.txt', 'w') do |file|
+      Category.all.each do |b|
+        b.name.split(/[\、\，\/]/).each { |w| file.puts(w) if w } if b.name
+      end
+    end
+  end
+
+
+  desc 'export_interest_tags_to_file'
+  task export_interest_tags_to_file: :environment do
+    File.open('features/interest_tags.txt', 'w') do |file|
+      InterestTag.all.each do |b|
+        b.name.split(/[\、\，\/]/).each { |w| file.puts(w) if w } if b.name
+      end
+    end
+  end
+
+
+
+  desc 'export_industry_to_file'
+  task export_industry_to_file: :environment do
+    File.open('features/industry.txt', 'w') do |file|
+      Industry.all.each do |b|
+        b.name.split(/[\、\，\/]/).each { |w| file.puts(w) if w } if b.name
+      end
+    end
+  end
+
+
+
+  desc 'export_industry_experiences'
+  task export_industry_experiences: :environment do
+    File.open('features/industry_experiences.txt', 'w') do |file|
+      Experience.all.map(&:industry_name).uniq.each do |name|
+        file.puts name
+        # b.industry_name.split(/[\、\，\/]/).uniq.each { |w| file.puts(w) if w } if b.industry_name
+      end
+    end
+  end
+
+
+
+
 
 
 end
