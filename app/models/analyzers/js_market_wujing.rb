@@ -25,26 +25,26 @@ class JsMarketWujing < Analyzer
       job_doc =  Nokogiri::HTML(web_driver.page_source)
       # #job
       job_name = job_doc.css('.jobstit .jobname')&.text&.strip
-      job_type = job_doc.css('.itemli')[0]&.text.strip
-      job_published_at = job_doc.css('.timebg')[0]&.text.strip
-      job_salary_range = job_doc.css('.jobstit .wage')&.text.strip
+      job_type = job_doc.css('.itemli')[0].text.strip  rescue nil
+      job_published_at = job_doc.css('.timebg')[0].text.strip rescue nil
+      job_salary_range = job_doc.css('.jobstit .wage').text&.strip
       job_benefits = job_doc.css('.lab .li').map(&:text)
-      job_mini_education = job_doc.css('.itemli')[3]&.text.strip
-      job_recruitment_num = job_doc.css('.itemli')[2]&.text.strip
-      job_mini_experience = job_doc.css('.itemli')[4]&.text.strip
+      job_mini_education = job_doc.css('.itemli')[3].text.strip rescue nil
+      job_recruitment_num = job_doc.css('.itemli')[2].text.strip rescue nil
+      job_mini_experience = job_doc.css('.itemli')[4].text.strip rescue nil
       job_city = job_doc.css('.add').text
       job_description = job_doc.css('.describe .txt')&.text.strip
       # #company
       company_name = job_doc.css('.comname a')&.text&.strip
-      company_origin_url =  "http://www.wjjy.gov.cn/#{job_doc.css('.comname a')[0]['href']}"
+      company_origin_url =  "http://www.wjjy.gov.cn/#{job_doc.css('.comname a')[0]['href']}" rescue nil
       web_driver.navigate.to company_origin_url
       company_doc =  Nokogiri::HTML(web_driver.page_source)
-      company_website = company_doc.css('.fl.content_c a')[0]['href']
-      company_mobile = company_doc.css('.txt .fl:not(.txt_t)')[1].text
-      company_tel = company_doc.css('.txt .fl:not(.txt_t)')[2].text
-      company_address = company_doc.css('.txt .fl:not(.txt_t)')[3].text
-      company_email = company_doc.css('.txt .fl:not(.txt_t)')[2].text
-      company_description = company_doc.css('.infobox .txt').text()
+      company_website = company_doc.css('.fl.content_c a')[0]['href'] rescue nil
+      company_mobile = company_doc.css('.txt .fl:not(.txt_t)')[1].text rescue nil
+      company_tel = company_doc.css('.txt .fl:not(.txt_t)')[2].text rescue nil
+      company_address = company_doc.css('.txt .fl:not(.txt_t)')[3].text  rescue nil
+      company_email = company_doc.css('.txt .fl:not(.txt_t)')[2].text  rescue nil
+      company_description = company_doc.css('.infobox .txt').text rescue nil
       # web_driver.save_screenshot('aaa.png')
       json = {
           job_name: job_name,
