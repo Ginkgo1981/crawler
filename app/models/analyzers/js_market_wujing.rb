@@ -13,7 +13,7 @@ class JsMarketWujing < Analyzer
   end
 
   def get_content(url = '')
-    url = 'http://www.wjjy.gov.cn/index.php?m=home&c=jobs&a=jobs_show&id=38009'
+    # url = 'http://www.wjjy.gov.cn/index.php?m=home&c=jobs&a=jobs_show&id=38009'
     login_url = 'http://www.wjjy.gov.cn/index.php?m=&c=members&a=login'
     begin
       web_driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs
