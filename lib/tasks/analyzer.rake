@@ -12,6 +12,7 @@ namespace :analyzer do
           puts "[analyzer] fetch_then_analyze link_url 0 '#{link_url}'"
         else
           puts "[analyzer] fetch_then_analyze empty 0 ''"
+          sleep 10
         end
       rescue Exception => e
         puts "[analyzer] fetch_then_analyze error 0 ''"

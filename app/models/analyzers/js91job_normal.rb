@@ -1,4 +1,4 @@
-class Js91job < Analyzer
+class Js91jobNormal < Analyzer
 
   def get_links(url)
     begin
@@ -9,14 +9,13 @@ class Js91job < Analyzer
       host = uri.host
       links = doc.css('.infoList .span1 a').map{|a| "http://#{host}#{a['href']}" }
     rescue Exception => e
-      puts "[analyzer] get_links #{self.to_s} 0 'error'"
+      puts "[analyzer] get_91job_normal error 0 '#{e.to_s}'"
     end
   end
 
   def get_content(url = '')
     # url = 'http://njfu0.91job.gov.cn/job/view/id/1217733'
     begin
-      url = $redis.zrange('link_queue', 0, 0).first
       uri = URI url
       agent = Mechanize.new
       job_page = agent.get uri
@@ -59,56 +58,10 @@ class Js91job < Analyzer
           company_mobile: company_mobile,
           company_description: company_description
       }
-      sink json
-      puts "[analyzer] get_content #{self.to_s} 0 '#{json.to_json}'"
+      write_to_redis json, 'company_job_json_queue'
+      puts "[analyzer] get_91job_normal succ 0 '#{json.to_json}'"
     rescue Exception => e
-      puts "[analyzer] get_content #{self.to_s} 0 'error'"
+      puts "[analyzer] get_91job_normal succ 0 '#{e}'"
     end
   end
-  # http://www.91job.gov.cn/job/view/id/1203398
-  # def process(url)
-  #   uri = URI url
-  #   agent = Mechanize.new
-  #   page = agent.get uri
-  #   doc = Nokogiri::HTML(page.body)
-  #   section1 = doc.css('.css-article-info p').text.strip
-  #   array1 = section1.scan(/(?:[\S]{4}\s:\s)([\S^]+)\w*/).flatten
-  #
-  #   company_kind, company_industry, company_scale, job_type, job_published_at, job_mini_experience, job_mini_education,
-  #       job_recruitment_num, job_language, job_city, job_salary_range, job_category = array1
-  #   section2 = doc.css('.css-tit~div').text.strip
-  #
-  #   # r = /(\S+)[\n\t]+[\S\s]{4}/ #use for scan
-  #
-  #   r2 = /(\S+)[\n\t\s]*[\S]{4}[\n\t\s]*[\S]{4}[\n\t\s]*([\S]+)[\n\t\s]*[\S]{3}([\S]+)[\n\t\s]*[\S]{5}([\S]+)[\n\t\s]*/
-  #   array2 = section2.match(r2).captures.flatten
-  #   job_description, company_description, company_mobile, company_email = array2
-  #   job_name = doc.css('.css-title.text-center').text
-  #   json =
-  #       {
-  #           company_name: '',
-  #           company_scale: company_scale,
-  #           company_logo: '',
-  #           company_kind: company_kind,
-  #           company_city: job_city,
-  #           company_address: '',
-  #           company_description: company_description,
-  #           company_email: company_email,
-  #           company_mobile: company_mobile,
-  #           company_contact_name: '',
-  #           job_name: job_name,
-  #           job_city: job_city,
-  #           job_address: '',
-  #           job_description: job_description,
-  #           job_salary_range: job_salary_range,
-  #
-  #           job_type: job_type,
-  #           job_published_at: job_published_at,
-  #           job_mini_education: job_mini_experience,
-  #           job_recruitment_num: job_recruitment_num,
-  #           job_language: job_language,
-  #           job_category: job_category
-  #       }
-  # end
-
 end

@@ -17,6 +17,10 @@ gem 'mechanize'
 gem 'nokogiri'
 gem 'listen'
 
+
+gem 'selenium'
+gem 'selenium-webdriver'
+
 gem 'elasticsearch'
 
 group :development, :test do
