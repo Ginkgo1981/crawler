@@ -12,4 +12,5 @@
 # https://github.com/SeleniumHQ/selenium/wiki/Ruby-Bindings
 # http://www.seleniumhq.org/download/
 
-$driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs
+# $
+# driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs

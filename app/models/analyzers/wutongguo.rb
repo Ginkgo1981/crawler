@@ -72,7 +72,7 @@ class Wutongguo < Analyzer
       end
       write_to_redis json_company_jobs, 'company_job_json_queue'
       puts  "[analyzer] get_wutongguo succ 0 '#{json_company_jobs.to_json}'"
-    rescue Exception =>
+    rescue Exception => e
       puts  "[analyzer] get_wutongguo error 0 '#{e.to_s}'"
     end
   end
