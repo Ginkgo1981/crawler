@@ -6,19 +6,29 @@ class Analyzer
   TEL_REG = /[0-9]{3,4}[\-\s\)]*[0-9]{8}/
 
   def initialize
-
+    # @@driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs
+    @@driver = nil
+    @@machanize_agent = nil
   end
 
 
-  def Analyzer.factory(url = nil)
-    # uri = URI url
-    # host = uri.host
-    # if host =~ /91job.gov.cn/
-    #   Js91jobNormal.new
-    # elsif host =~ /wutongguo.com/
-    #   Wutongguo.new
-    # end
+  def web_agent
+    if @@machanize_agent.nil?
+      @@machanize_agent = Mechanize.new
+      @@machanize_agent.user_agent_alias = "Windows Mozilla"
+    end
+    @@machanize_agent
+  end
 
+  def web_driver
+    if @@driver && @@driver.session_id
+    else
+      @@driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs
+    end
+    @@driver
+  end
+
+  def Analyzer.factory(url = nil)
     if url =~ /91job.gov.cn\/campus/
       Js91jobCampus.new
     elsif  url =~ /91job.gov.cn\/job/
@@ -27,6 +37,8 @@ class Analyzer
       Wutongguo.new
     elsif url =~ /51job/
       Job51.new
+    elsif url =~ /wjjy/
+      JsMarketWujing.new
     end
   end
 

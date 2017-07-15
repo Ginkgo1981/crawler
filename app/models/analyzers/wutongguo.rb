@@ -5,9 +5,8 @@ class Wutongguo < Analyzer
     # url = 'http://www.wutongguo.com/wangshen/n1'
     begin
       uri = URI url
-      agent = Mechanize.new
-      agent.user_agent_alias = "Windows Mozilla"
-      page = agent.get uri
+      # agent = Mechanize.new
+      page = web_agent.get uri
       doc = Nokogiri::HTML(page.body, nil, 'gb2312')
       links = doc.css('.GovListTitle').map { |a| "http://www.wutongguo.com#{a['href']}" }
     rescue Exception => e
@@ -21,8 +20,8 @@ class Wutongguo < Analyzer
       json_company_jobs = []
       # url = 'http://m.wutongguo.com/notice6C63594044.html'
       uri = URI url
-      agent = Mechanize.new
-      page = agent.get uri
+      # agent = Mechanize.new
+      page = web_agent.get uri
       doc = Nokogiri::HTML(page.body, nil, 'gb2312')
       company_name = doc.css('.HeadContent>div')[0].text
       company_city, company_scale, company_kind, company_category = doc.css('.HeadContent>div')[1].text.strip.split /\|/
@@ -46,7 +45,7 @@ class Wutongguo < Analyzer
       job_urls = doc.css('.bro_job').select{|a| a['href'] =~ /job/}.map { |a| "http://m.wutongguo.com#{a['href']}" }
       job_urls.each do |job_url|
         puts "[analyzer] wutongguo get_content job_url #{job_url}"
-        job_page = agent.get job_url
+        job_page = web_agent.get job_url
         job_doc = Nokogiri::HTML(job_page.body, nil, 'gb2312')
         job_name = job_doc.css('.txt_link').text
         job_items = job_doc.css('.cp_ln').map { |i| i.text.split(/：/)[1].try(:strip) }

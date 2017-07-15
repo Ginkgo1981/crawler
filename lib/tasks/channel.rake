@@ -1,9 +1,18 @@
 namespace :channel do
   desc 'read from channel, then enqueue links '
-  task enqueue_links: :environment do
-    Channel.where(site_id: 307).preload(:site).each do |channel|
-      puts "[channel] process channel 0 '#{channel.url}'"
-      channel.enqueue_links
+  task :enqueue_links, [:site_id] => :environment do |t, args|
+    puts "args: #{args}"
+    site_id = args.site_id
+    if site_id
+      Channel.where(site_id: 458).preload(:site).each do |channel|
+        puts "[channel] process channel 0 '#{channel.url}'"
+        channel.enqueue_links
+      end
+    else
+      Channel.all.preload(:site).each do |channel|
+        puts "[channel] process channel 0 '#{channel.url}'"
+        channel.enqueue_links
+      end
     end
   end
 
@@ -25,8 +34,6 @@ namespace :channel do
       end
     end
   end
-
-
 
   desc 'create_channels_91jobs_campus'
   task create_channels_91jobs_campus: :environment do
@@ -76,7 +83,23 @@ namespace :channel do
     end
   end
 
-  desc 'create_channels_wutongguo'
+
+
+  desc 'create_channels_js_market_wujing'
+  task create_channels_js_market_wujing: :environment do
+    site = Site.create! name: '武进人才网', url: 'http://www.wjjy.gov.cn'
+    (1..10).each_with_index do |i|
+      channel = Channel.create! site: site,
+                                name: "#{site.name}-p#{i}",
+                                status: 1,
+                                url: "#{site.url}/index.php?m=&c=jobs&a=jobs_list&education=70&p=#{i}"
+      puts "[channel] create-channels js_market_wujing 0 '#{channel.name}'"
+    end
+  end
+
+
+
+  desc 'clean_site_channel'
   task clean_site_channel: :environment do
     Site.delete_all
     Channel.delete_all

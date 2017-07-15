@@ -3,8 +3,8 @@ class Js91jobCampus < Analyzer
   def get_links(url)
     begin
       uri = URI url
-      agent = Mechanize.new
-      page = agent.get uri
+      # agent = Mechanize.new
+      page = web_agent.get uri
       doc = Nokogiri::HTML(page.body)
       host = uri.host
       links = doc.css('.infoList a').map{|a| "http://#{host}#{a['href']}" }
@@ -17,8 +17,8 @@ class Js91jobCampus < Analyzer
     # url = 'http://njfu.91job.gov.cn/campus/view/id/666484'
     begin
       uri = URI url
-      agent = Mechanize.new
-      job_page = agent.get uri
+      # agent = Mechanize.new
+      job_page = web_agent.get uri
       job_doc = Nokogiri::HTML(job_page.body)
       job_name = job_doc.css('.viewHead h1').text
 
@@ -31,7 +31,7 @@ class Js91jobCampus < Analyzer
       company_name = job_doc.css('.viewHead .info a')[0].text
       company_name = job_name.scan(/.*[公司|集团]/).first if company_name.blank?
 
-      company_page = agent.get company_page_url
+      company_page = web_agent.get company_page_url
       company_doc = Nokogiri::HTML(company_page.body)
       company_items = company_doc.css('.tInfo-2 span').map{|item| item.text}
       company_city, company_category, company_kind, company_scale, company_address, company_zip, company_website, company_hr, company_mobile = company_items
