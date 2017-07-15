@@ -4,7 +4,7 @@ namespace :channel do
     puts "args: #{args}"
     site_id = args.site_id
     if site_id
-      Channel.where(site_id: 458).preload(:site).each do |channel|
+      Channel.where(site_id: site_id).preload(:site).each do |channel|
         puts "[channel] process channel 0 '#{channel.url}'"
         channel.enqueue_links
       end
