@@ -35,9 +35,9 @@ class JsMarketWujing < Analyzer
       job_city = job_doc.css('.add').text
       job_description = job_doc.css('.describe .txt')&.text.strip
       # #company
-      web_driver.navigate.to company_origin_url
       company_name = job_doc.css('.comname a')&.text&.strip
       company_origin_url =  "http://www.wjjy.gov.cn/#{job_doc.css('.comname a')[0]['href']}"
+      web_driver.navigate.to company_origin_url
       company_doc =  Nokogiri::HTML(web_driver.page_source)
       company_website = company_doc.css('.fl.content_c a')[0]['href']
       company_mobile = company_doc.css('.txt .fl:not(.txt_t)')[1].text
