@@ -1,13 +1,13 @@
 class JsMarketWujing < Analyzer
 
   def get_links(url = '')
-    url = 'http://www.wjjy.gov.cn/index.php?m=&c=jobs&a=jobs_list&p=1'
+    # url = 'http://www.wjjy.gov.cn/index.php?m=&c=jobs&a=jobs_list&p=1'
     begin
       page = web_agent.get url
       doc = Nokogiri::HTML(page.body, nil)
       doc.css('.td2 .line_substring').map{|a| "http://www.wjjy.gov.cn/#{a['href']}"}
     rescue Exception => e
-      puts "[analyzer] get_51job_links error 0 '#{e.to_s}'"
+      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"
     end
 
   end
@@ -24,18 +24,18 @@ class JsMarketWujing < Analyzer
       web_driver.navigate.to url
       job_doc =  Nokogiri::HTML(web_driver.page_source)
       # #job
-      job_name = job_doc.css('.jobstit .jobname')&.text&.strip
+      job_name = job_doc.css('.jobstit .jobname').text.strip rescue nil
       job_type = job_doc.css('.itemli')[0].text.strip  rescue nil
       job_published_at = job_doc.css('.timebg')[0].text.strip rescue nil
-      job_salary_range = job_doc.css('.jobstit .wage').text&.strip
+      job_salary_range = job_doc.css('.jobstit .wage').text.strip rescue nil
       job_benefits = job_doc.css('.lab .li').map(&:text)
       job_mini_education = job_doc.css('.itemli')[3].text.strip rescue nil
       job_recruitment_num = job_doc.css('.itemli')[2].text.strip rescue nil
       job_mini_experience = job_doc.css('.itemli')[4].text.strip rescue nil
       job_city = job_doc.css('.add').text
-      job_description = job_doc.css('.describe .txt')&.text.strip
+      job_description = job_doc.css('.describe .txt').text.strip rescue nil
       # #company
-      company_name = job_doc.css('.comname a')&.text&.strip
+      company_name = job_doc.css('.comname a').text.strip rescue nil
       company_origin_url =  "http://www.wjjy.gov.cn/#{job_doc.css('.comname a')[0]['href']}" rescue nil
       web_driver.navigate.to company_origin_url
       company_doc =  Nokogiri::HTML(web_driver.page_source)
@@ -43,7 +43,7 @@ class JsMarketWujing < Analyzer
       company_mobile = company_doc.css('.txt .fl:not(.txt_t)')[1].text rescue nil
       company_tel = company_doc.css('.txt .fl:not(.txt_t)')[2].text rescue nil
       company_address = company_doc.css('.txt .fl:not(.txt_t)')[3].text  rescue nil
-      company_email = company_doc.css('.txt .fl:not(.txt_t)')[2].text  rescue nil
+      # company_email = company_doc.css('.txt .fl:not(.txt_t)')[2].text  rescue nil
       company_description = company_doc.css('.infobox .txt').text rescue nil
       # web_driver.save_screenshot('aaa.png')
       json = {
@@ -64,13 +64,13 @@ class JsMarketWujing < Analyzer
           company_origin_url: company_origin_url,
           company_website:company_website,
           company_mobile:company_mobile,
-          company_tel: company_tel,
-          company_email: company_email
+          company_tel: company_tel
+          # company_email: company_email
       }
-      write_to_redis json, 'js_market_wujing'
-      puts "[analyzer] get_js_market_wujing succ 0 '#{json.to_json}'"
+      write_to_redis json, 'company_job_json_queue'
+      puts "[crawler] get_content #{self.class.to_s}  0 '#{json.to_json}'"
     rescue Exception => e
-      puts "[analyzer] get_js_market_wujing error 0 '#{e.to_s}'"
+      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"
     end
   end
 end

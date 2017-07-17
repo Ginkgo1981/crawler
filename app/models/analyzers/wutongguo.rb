@@ -1,6 +1,5 @@
 class Wutongguo < Analyzer
 
-
   def get_links(url='')
     # url = 'http://www.wutongguo.com/wangshen/n1'
     begin
@@ -10,10 +9,9 @@ class Wutongguo < Analyzer
       doc = Nokogiri::HTML(page.body, nil, 'gb2312')
       links = doc.css('.GovListTitle').map { |a| "http://www.wutongguo.com#{a['href']}" }
     rescue Exception => e
-      puts "[analyzer] get_wutongguo error 0 '#{e.to_s}'"
+      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"
     end
   end
-
 
   def get_content(url = '')
     begin
@@ -70,9 +68,9 @@ class Wutongguo < Analyzer
         json_company_jobs << json_company.merge(json_job)
       end
       write_to_redis json_company_jobs, 'company_job_json_queue'
-      puts  "[analyzer] get_wutongguo succ 0 '#{json_company_jobs.to_json}'"
+      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
     rescue Exception => e
-      puts  "[analyzer] get_wutongguo error 0 '#{e.to_s}'"
+      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"
     end
   end
 

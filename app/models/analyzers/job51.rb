@@ -20,9 +20,8 @@ class Job51 < Analyzer
       doc =  Nokogiri::HTML(get_driver.page_source)
       doc.css('.info .title a').map{|a| a['href']}
     rescue Exception => e
-      puts "[analyzer] get_51job_links error 0 '#{e.to_s}'"
+      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"
     end
-
   end
 
   def get_content(url = '')
@@ -71,9 +70,9 @@ class Job51 < Analyzer
           company_url: company_url
       }
       write_to_redis json, '51job'
-      puts "[analyzer] get_51job_links succ 0 '#{json.to_json}'"
+      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
     rescue Exception => e
-      puts "[analyzer] get_51job_links error 0 '#{e.to_s}'"
+      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"
     end
   end
 end

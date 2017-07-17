@@ -1,0 +1,104 @@
+namespace :job91 do
+
+  desc 'js_normal'
+  task js_normal: :environment do
+    url = 'http://www.91job.gov.cn/default/schoollist'
+    uri = URI url
+    agent = Mechanize.new
+    page = agent.get uri
+    doc = Nokogiri::HTML(page.body)
+    doc.css('.css-list li a').each do |u|
+      site = Site.find_or_create_by! name: u.text, url: u['href']
+      (1..10).each_with_index do |i|
+        channel = Channel.create! site: site,
+                                  name: "#{site.name}-p#{i}",
+                                  status: 1,
+                                  url: "#{site.url}/job/search?d_category=100&page=#{i}"
+        puts "[channel] create-channels 91jobs_normal 0 '#{channel.name}'"
+      end
+    end
+  end
+
+  desc 'js_campus'
+  task js_campus: :environment do
+    url = 'http://www.91job.gov.cn/default/schoollist'
+    uri = URI url
+    agent = Mechanize.new
+    page = agent.get uri
+    doc = Nokogiri::HTML(page.body)
+    doc.css('.css-list li a').each do |u|
+      site = Site.find_or_create_by! name: u.text, url: u['href']
+      (1..10).each_with_index do |i|
+        channel = Channel.create! site: site,
+                                  name: "#{site.name}-p#{i}",
+                                  status: 1,
+                                  url: "#{site.url}/campus/index?page=#{i}"
+        puts "[channel] create-channels 91jobs_normal 0 '#{channel.name}'"
+      end
+    end
+  end
+
+
+
+  #湖北 91job jobs
+  desc 'hb_normal'
+  task hb_normal: :environment do
+    text=File.open('job_seeds/91_hbbys.txt').read
+    text.each_line do |line|
+      puts line
+      url, name = line.split " "
+      site = Site.find_or_create_by! name: name, url: url
+      (1..10).each_with_index do |i|
+        channel = Channel.create! site: site,
+                                  name: "#{site.name}-p#{i}",
+                                  status: 1,
+                                  url: "#{site.url}/job/search?d_category=100&page=#{i}"
+        puts "[channel] create-channels 91jobs_normal_hbbys 0 '#{channel.name}'"
+      end
+    end
+  end
+
+  #湖北 91job campus
+  desc 'hb_campus'
+  task hb_campus: :environment do
+    text=File.open('job_seeds/91_hbbys.txt').read
+    text.each_line do |line|
+      puts line
+      url, name = line.split " "
+      site = Site.find_or_create_by! name: name, url: url
+      (1..10).each_with_index do |i|
+        channel = Channel.create! site: site,
+                                  name: "#{site.name}-p#{i}",
+                                  status: 1,
+                                  url: "#{site.url}/campus/index?page=#{i}"
+        puts "[channel] create-channels 91jobs_campus_hbbys 0 '#{channel.name}'"
+      end
+    end
+  end
+
+
+  #其它 91job jobs
+  desc 'others_normal'
+  task others_normal: :environment do
+    text=File.open('job_seeds/91_others.txt').read
+    text.each_line do |line|
+      puts line
+      name,url = line.split " "
+      site = Site.find_or_create_by! name: name, url: url
+      (1..10).each_with_index do |i|
+        channel = Channel.create! site: site,
+                                  name: "#{site.name}-p#{i}",
+                                  status: 1,
+                                  url: "#{site.url}/job/search?d_category=100&page=#{i}"
+        puts "[channel] create-channels  others_normal 0 '#{channel.name}'"
+      end
+    end
+  end
+
+
+
+
+
+
+
+end

@@ -16,87 +16,25 @@ namespace :channel do
     end
   end
 
-  desc 'create_channels_91jobs_normal'
-  task create_channels_91jobs_normal: :environment do
-    url = 'http://www.91job.gov.cn/default/schoollist'
-    uri = URI url
-    agent = Mechanize.new
-    page = agent.get uri
-    doc = Nokogiri::HTML(page.body)
-    doc.css('.css-list li a').each do |u|
-      site = Site.find_or_create_by! name: u.text, url: u['href']
-      (1..10).each_with_index do |i|
-        channel = Channel.create! site: site,
-                                  name: "#{site.name}-p#{i}",
-                                  status: 1,
-                                  url: "#{site.url}/job/search?d_category=100&page=#{i}"
-        puts "[channel] create-channels 91jobs_normal 0 '#{channel.name}'"
+  desc 'read from redis, fetch the content then analyze the content'
+  task dequeue: :environment do
+    while(true)
+      begin
+        link_url = $redis.zrange('link_queue', 0, 0).first
+        if link_url.present?
+          $redis.zrem 'link_queue', link_url
+          analyzer = Analyzer.factory(link_url)
+          analyzer.get_content link_url
+          puts "[crawler] dequeue link_url 0 '#{link_url}'"
+        else
+          puts "[crawler] dequeue empty 0 ''"
+          sleep 10
+        end
+      rescue Exception => e
+        puts "[crawler] dequeue error 0 ''"
       end
     end
   end
-
-  desc 'create_channels_91jobs_campus'
-  task create_channels_91jobs_campus: :environment do
-    url = 'http://www.91job.gov.cn/default/schoollist'
-    uri = URI url
-    agent = Mechanize.new
-    page = agent.get uri
-    doc = Nokogiri::HTML(page.body)
-    doc.css('.css-list li a').each do |u|
-      site = Site.find_or_create_by! name: u.text, url: u['href']
-      (1..10).each_with_index do |i|
-        channel = Channel.create! site: site,
-                                  name: "#{site.name}-p#{i}",
-                                  status: 1,
-                                  url: "#{site.url}/campus/index?page=#{i}"
-        puts "[channel] create-channels 91jobs_normal 0 '#{channel.name}'"
-      end
-    end
-  end
-
-
-  desc 'create_channels_51jobs'
-  task create_channels_51jobs: :environment do
-    site = Site.create! name: '51job', url: 'http://www.51job.com'
-    ['nanjing'].each do |city|
-      (1..2).each_with_index do |i|
-        channel = Channel.create! site: site,
-                                  name: "#{site.name}-p#{i}",
-                                  status: 1,
-                                  url: "http://jobs.51job.com/nanjing/p#{i}"
-      end
-    end
-  end
-
-
-
-
-  desc 'create_channels_wutongguo'
-  task create_channels_wutongguo: :environment do
-    site = Site.create! name: '梧桐果', url: 'http://www.wutongguo.com'
-    (1..100).each_with_index do |i|
-      channel = Channel.create! site: site,
-                                name: "#{site.name}-p#{i}",
-                                status: 1,
-                                url: "#{site.url}/wangshen/n#{i}"
-      puts "[channel] create-channels Wutongguo 0 '#{channel.name}'"
-    end
-  end
-
-
-
-  desc 'create_channels_js_market_wujing'
-  task create_channels_js_market_wujing: :environment do
-    site = Site.create! name: '武进人才网', url: 'http://www.wjjy.gov.cn'
-    (1..10).each_with_index do |i|
-      channel = Channel.create! site: site,
-                                name: "#{site.name}-p#{i}",
-                                status: 1,
-                                url: "#{site.url}/index.php?m=&c=jobs&a=jobs_list&education=70&p=#{i}"
-      puts "[channel] create-channels js_market_wujing 0 '#{channel.name}'"
-    end
-  end
-
 
 
   desc 'clean_site_channel'
@@ -105,6 +43,7 @@ namespace :channel do
     Channel.delete_all
     puts "[channel] delete-all 0 ''"
   end
+
 
 
   desc 'create_all_channels'

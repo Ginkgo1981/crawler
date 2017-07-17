@@ -9,7 +9,7 @@ class Js91jobNormal < Analyzer
       host = uri.host
       links = doc.css('.infoList .span1 a').map{|a| "http://#{host}#{a['href']}" }
     rescue Exception => e
-      puts "[analyzer] get_91job_normal error 0 '#{e.to_s}'"
+      puts "[crawler] get_links #{self.class.to_s} 1 '#{e.to_s}'"
     end
   end
 
@@ -59,9 +59,9 @@ class Js91jobNormal < Analyzer
           company_description: company_description
       }
       write_to_redis json, 'company_job_json_queue'
-      puts "[analyzer] get_91job_normal succ 0 '#{json.to_json}'"
+      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
     rescue Exception => e
-      puts "[analyzer] get_91job_normal succ 0 '#{e}'"
+      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"
     end
   end
 end
