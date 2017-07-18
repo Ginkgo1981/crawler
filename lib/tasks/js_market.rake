@@ -44,5 +44,16 @@ namespace :js_market do
     end
   end
 
+  desc '扬州' #
+  task yz: :environment do
+    site = Site.create! name: '扬州人才网', url: 'http://www.yzjob.net.cn'
+    (1..10).each_with_index do |i|
+      Channel.create! site: site,
+                      name: "#{site.name}",
+                      status: 1,
+                      url: "http://www.yzjob.net.cn/job_list.shtml?postType=&workPlace=&dayNum=&unitName=&postName=&curPage=#{i}"
+    end
+  end
+
 
 end

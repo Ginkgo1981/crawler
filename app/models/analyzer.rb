@@ -1,6 +1,5 @@
 class Analyzer
 
-
   EMAIL_REG = /[0-9a-zA-Z]+@[0-9a-zA-Z\.]+/
   MOBILE_REG = /[0-9]{11}/
   TEL_REG = /[0-9]{3,4}[\-\s\)]*[0-9]{8}/
@@ -49,6 +48,8 @@ class Analyzer
       JsMarketZhengjiang.new
     elsif url =~ /ntr.com.cn/
       JsMarketNantong.new
+    elsif url =~ /yzjob/
+      JsMarketYangzhou.new
     else
       raise '需要指定 analyzer'
     end
