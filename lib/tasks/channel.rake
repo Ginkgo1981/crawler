@@ -1,6 +1,6 @@
 namespace :channel do
   desc 'read from channel, then enqueue links '
-  task :enqueue_links, [:site_id] => :environment do |t, args|
+  task :enqueue, [:site_id] => :environment do |t, args|
     puts "args: #{args}"
     site_id = args.site_id
     if site_id
