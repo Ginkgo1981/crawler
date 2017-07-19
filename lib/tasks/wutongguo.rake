@@ -7,7 +7,7 @@ namespace :wutongguo do
                                 name: "#{site.name}_p#{i}",
                                 status: 0,
                                 url: "#{site.url}/wangshen/n#{i}"
-      puts "[crawler] create_channels Wutongguo 0 '#{channel.name}'"
+      puts "[crawler] create_channels Wutongguo 0 '#{channel.name}' ''"
     end
   end
 end

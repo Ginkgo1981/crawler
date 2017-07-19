@@ -7,7 +7,7 @@ class JsMarketYangzhou< Analyzer
       doc = Nokogiri::HTML(page.body, nil)
       doc.css('.List1').map { |d| 'http://www.yzjob.net.cn/' + d.css('.TD1 a')[0]['href']+'&time='+d.css('.TD2').text.split(' ')[0] }
     rescue Exception => e
-      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"
+      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
   end
 
@@ -60,9 +60,9 @@ class JsMarketYangzhou< Analyzer
       }
       json = job_json.merge(company_json)
       write_to_redis json, 'js_market_json_queue'
-      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
+      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
     rescue Exception => e
-      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"
+      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
   end
 end

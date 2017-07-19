@@ -7,7 +7,7 @@ class JsMarketZhengjiang < Analyzer
       doc = Nokogiri::HTML(page.body, nil)
       doc.css('.jobname a').map{|a| "http://www.hrol.cn/#{a['href']}"}
     rescue Exception => e
-      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"
+      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}' #{url}"
     end
 
   end
@@ -69,9 +69,9 @@ class JsMarketZhengjiang < Analyzer
           company_email: company_email
       }
       write_to_redis json, 'js_market_json_queue'
-      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
+      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
     rescue Exception => e
-      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}''"
+      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
   end
 end

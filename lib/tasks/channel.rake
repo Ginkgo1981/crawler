@@ -5,15 +5,15 @@ namespace :channel do
     site_id = args.site_id
     if site_id
       Channel.where(site_id: site_id).preload(:site).each do |channel|
-        puts "[crawler] enqueue #{channel.site.name} 0 '#{channel.url}'"
+        puts "[crawler] enqueue succ 0 '#{channel.site.name}' '#{channel.url}'"
         channel.enqueue_links
       end
     else
       Channel.all.preload(:site).each do |channel|
-        puts "[crawler] enqueue #{channel.site.name} 0 '#{channel.url}'"
+        puts "[crawler] enqueue succ 0 '#{channel.site.name}' '#{channel.url}'"
         channel.enqueue_links
       end
-      puts "[crawler] enqueue finish 0 ''"
+      puts "[crawler] enqueue finish 0 '' ''"
     end
   end
 
@@ -26,13 +26,13 @@ namespace :channel do
           $redis.zrem 'link_queue', link_url
           analyzer = Analyzer.factory(link_url)
           analyzer.get_content link_url
-          puts "[crawler] dequeue link_url 0 '#{link_url}'"
+          puts "[crawler] dequeue succ 0 '' '#{link_url}'"
         else
-          puts "[crawler] dequeue empty 0 ''"
+          puts "[crawler] dequeue fail 0 'empty' ''"
           sleep 10
         end
       rescue Exception => e
-        puts "[crawler] dequeue error 0 ''"
+        puts "[crawler] dequeue fail 0 '#{e.to_s}' '#{link_url}'"
       end
     end
   end

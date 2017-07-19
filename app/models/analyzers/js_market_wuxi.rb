@@ -7,7 +7,7 @@ class JsMarketWuxi< Analyzer
       doc = Nokogiri::HTML(page.body, nil)
       doc.css('.Membership_box a').map{|a| "http://www.wxrcw.com/#{a['href']}"}
     rescue Exception => e
-      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"
+      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
   end
 
@@ -55,10 +55,10 @@ class JsMarketWuxi< Analyzer
         }
         json = job_json.merge(company_json)
         write_to_redis json, 'js_market_json_queue'
-        puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
+        puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
       end
     rescue Exception => e
-      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"
+      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
   end
 end

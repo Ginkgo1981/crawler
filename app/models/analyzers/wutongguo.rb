@@ -9,7 +9,7 @@ class Wutongguo < Analyzer
       doc = Nokogiri::HTML(page.body, nil, 'gb2312')
       links = doc.css('.GovListTitle').map { |a| "http://www.wutongguo.com#{a['href']}" }
     rescue Exception => e
-      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"
+      puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
   end
 
@@ -68,9 +68,9 @@ class Wutongguo < Analyzer
         json_company_jobs << json_company.merge(json_job)
       end
       write_to_redis json_company_jobs, 'wutongguo_json_queue'
-      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
+      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
     rescue Exception => e
-      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"
+      puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
   end
 
