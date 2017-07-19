@@ -18,9 +18,9 @@ namespace :job91 do
       (1..10).each_with_index do |i|
         channel = Channel.create! site: site,
                                   name: "#{site.name}_p#{i}",
-                                  status: 1,
-                                  url: "#{URI(site.url).host}/job/search?d_category=100&page=#{i}"
-        puts "[channel] create-channels 91jobs_normal 0 '#{channel.name}'"
+                                  status: 0,
+                                  url: "http://#{URI(site.url).host}/job/search?d_category=100&page=#{i}"
+        puts "[crawler] create_channels 91jobs_normal 0 '#{channel.name}'"
       end
     end
   end
@@ -37,9 +37,9 @@ namespace :job91 do
       (1..10).each_with_index do |i|
         channel = Channel.create! site: site,
                                   name: "#{site.name}_p#{i}",
-                                  status: 1,
-                                  url: "#{URI(site.url).host}/campus/index?page=#{i}"
-        puts "[channel] create-channels 91jobs_normal 0 '#{channel.name}'"
+                                  status: 0,
+                                  url: "http://#{URI(site.url).host}/campus/index?page=#{i}"
+        puts "[crawler] create_channels 91jobs_normal 0 '#{channel.name}'"
       end
     end
   end
@@ -57,9 +57,9 @@ namespace :job91 do
       (1..10).each_with_index do |i|
         channel = Channel.create! site: site,
                                   name: "#{site.name}_p#{i}",
-                                  status: 1,
-                                  url: "#{URI(site.url).host}/job/search?d_category=100&page=#{i}"
-        puts "[channel] create-channels 91jobs_normal_hbbys 0 '#{channel.name}'"
+                                  status: 0,
+                                  url: "http://#{URI(site.url).host}/job/search?d_category=100&page=#{i}"
+        puts "[crawler] create_channels 91jobs_normal_hbbys 0 '#{channel.name}'"
       end
     end
   end
@@ -76,8 +76,8 @@ namespace :job91 do
         channel = Channel.create! site: site,
                                   name: "#{site.name}_p#{i}",
                                   status: 1,
-                                  url: "#{URI(site.url).host}/campus/index?page=#{i}"
-        puts "[channel] create-channels 91jobs_campus_hbbys 0 '#{channel.name}'"
+                                  url: "http://#{URI(site.url).host}/campus/index?page=#{i}"
+        puts "[crawler] create_channels 91jobs_campus_hbbys 0 '#{channel.name}'"
       end
     end
   end
@@ -94,9 +94,9 @@ namespace :job91 do
       (1..10).each_with_index do |i|
         channel = Channel.create! site: site,
                                   name: "#{site.name}_p#{i}",
-                                  status: 1,
-                                  url: "#{URI(site.url).host}/job/search?d_category=100&page=#{i}"
-        puts "[channel] create-channels  others_normal 0 '#{channel.name}'"
+                                  status: 0,
+                                  url: "http://#{URI(site.url).host}/job/search?d_category=100&page=#{i}"
+        puts "[crawler] create_channels  others_normal 0 '#{channel.name}'"
       end
     end
   end
@@ -114,9 +114,9 @@ namespace :job91 do
       (1..10).each_with_index do |i|
         channel = Channel.create! site: site,
                                   name: "#{site.name}_p#{i}",
-                                  status: 1,
-                                  url: "#{URI(site.url)}/campus/index?page=#{i}"
-        puts "[channel] create-channels  others_campus 0 '#{channel.name}'"
+                                  status: 0,
+                                  url: "http://#{URI(site.url)}/campus/index?page=#{i}"
+        puts "[crawler] create_channels  others_campus 0 '#{channel.name}'"
       end
     end
   end

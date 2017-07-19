@@ -5,8 +5,8 @@ namespace :job51 do
     ['nanjing'].each do |city|
       (1..2).each_with_index do |i|
         channel = Channel.create! site: site,
-                                  name: "#{site.name}-p#{i}",
-                                  status: 1,
+                                  name: "#{site.name}_p#{i}",
+                                  status: 0,
                                   url: "http://jobs.51job.com/nanjing/p#{i}"
       end
     end
