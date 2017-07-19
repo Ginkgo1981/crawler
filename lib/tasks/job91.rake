@@ -35,13 +35,15 @@ namespace :job91 do
     page = agent.get uri
     doc = Nokogiri::HTML(page.body)
     doc.css('.css-list li a').each do |u|
-      site = Site.find_or_create_by! name: u.text, url: u['href']
-      (1..10).each_with_index do |i|
-        channel = Channel.create! site: site,
-                                  name: "#{site.name}_p#{i}",
-                                  status: 0,
-                                  url: "http://#{URI(site.url).host}/campus/index?page=#{i}"
-        puts "[crawler] create_channels 91jobs_normal 0 '#{channel.name}'"
+      if u['href'] =~ /http/
+        site = Site.find_or_create_by! name: u.text, url: u['href']
+        (1..10).each_with_index do |i|
+          channel = Channel.create! site: site,
+                                    name: "#{site.name}_p#{i}",
+                                    status: 0,
+                                    url: "http://#{URI(site.url).host}/campus/index?page=#{i}"
+          puts "[crawler] create_channels 91jobs_normal 0 '#{channel.name}'"
+        end
       end
     end
   end

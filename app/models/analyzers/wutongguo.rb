@@ -42,7 +42,7 @@ class Wutongguo < Analyzer
           }
       job_urls = doc.css('.bro_job').select{|a| a['href'] =~ /job/}.map { |a| "http://m.wutongguo.com#{a['href']}" }
       job_urls.each do |job_url|
-        puts "[analyzer] wutongguo get_content job_url #{job_url}"
+        # puts "[analyzer] wutongguo get_content job_url #{job_url}"
         job_page = web_agent.get job_url
         job_doc = Nokogiri::HTML(job_page.body, nil, 'gb2312')
         job_name = job_doc.css('.txt_link').text
