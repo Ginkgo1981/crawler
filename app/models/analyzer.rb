@@ -22,7 +22,7 @@ class Analyzer
   def web_driver #这是有状态的
     if @driver && @driver.session_id
     else
-      @driver = Selenium::WebDriver.for :remote, desired_capabilities: :firefox
+      @driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs
     end
     @driver
   end
@@ -54,7 +54,6 @@ class Analyzer
       JsMarketJsrsrc.new
     else
       puts "[crawer] get_analyzer error 0 '#{url}'"
-      raise '需要指定 analyzer'
     end
   end
 
