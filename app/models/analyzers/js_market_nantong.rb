@@ -34,7 +34,7 @@ class JsMarketNantong < Analyzer
       job_mini_experience = job_doc.css('div.itemli')[4].text rescue nil
       job_city = job_doc.css('.add').text rescue nil
       job_published_at = job_doc.css('.timebg')[0].text.strip rescue nil
-      job_description = job_doc.css('.describe .txt')&.text.strip
+      job_description = job_doc.css('.describe .txt').text.strip rescue nil
 
       company_name = job_doc.css('.comname a').text.strip rescue nil
       company_origin_url =  "#{job_doc.css('.comname a')[0]['href']}" rescue nil

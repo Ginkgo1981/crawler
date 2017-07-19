@@ -13,6 +13,7 @@ namespace :channel do
         puts "[crawler] enqueue #{channel.site.name} 0 '#{channel.url}'"
         channel.enqueue_links
       end
+      puts "[crawler] enqueue finish 0 ''"
     end
   end
 
