@@ -59,7 +59,7 @@ class JsMarketYangzhou< Analyzer
           company_tel: company_tel
       }
       json = job_json.merge(company_json)
-      write_to_redis json, 'company_job_json_queue'
+      write_to_redis json, 'js_market_json_queue'
       puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"

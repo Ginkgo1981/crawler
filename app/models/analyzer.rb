@@ -5,8 +5,8 @@ class Analyzer
   TEL_REG = /[0-9]{3,4}[\-\s\)]*[0-9]{8}/
 
   def initialize
-    # @@driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs
-    @@driver = nil
+    # @driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs
+    @driver = nil
     @@machanize_agent = nil
   end
 
@@ -19,12 +19,12 @@ class Analyzer
     @@machanize_agent
   end
 
-  def web_driver
-    if @@driver && @@driver.session_id
+  def web_driver #这是有状态的
+    if @driver && @driver.session_id
     else
-      @@driver = Selenium::WebDriver.for :remote, desired_capabilities: :phantomjs
+      @driver = Selenium::WebDriver.for :remote, desired_capabilities: :firefox
     end
-    @@driver
+    @driver
   end
 
   def Analyzer.factory(url = nil)
@@ -50,6 +50,8 @@ class Analyzer
       JsMarketNantong.new
     elsif url =~ /yzjob/
       JsMarketYangzhou.new
+    elsif url =~ /jsrsrc/
+      JsMarketJsrsrc.new
     else
       raise '需要指定 analyzer'
     end
@@ -64,6 +66,19 @@ class Analyzer
       puts "[crawler] write_to_redis #{self.class.to_s} 1 ''"
     end
     # $es.index index: 'crawler', type: 'company_job', body: entity
+  end
+
+
+    def get_captcha(captcha_url)
+    code64 = Base64.encode64(open(captcha_url).read).gsub("\n", '')
+    conn = Faraday.new(:url => 'https://ali-checkcode.showapi.com/checkcode')
+    res = conn.post do |req|
+      req.headers['Authorization'] = 'APPCODE 5db42d4e96d14d488873517ce1e998a7'
+      req.body = {convert_to_jpg: '0', img_base64: code64, typeId: '3040'}
+    end
+    captcha = JSON(res.body)['showapi_res_body']['Result']
+    puts "[crawler] captcha #{self.class.to_s} 0 '#{captcha}'"
+    captcha
   end
 
 end

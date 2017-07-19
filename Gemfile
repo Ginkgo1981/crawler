@@ -22,6 +22,8 @@ gem 'selenium'
 gem 'selenium-webdriver'
 
 gem 'elasticsearch'
+# gem 'tesseract-ocr'
+gem 'faraday'
 
 group :development, :test do
   gem 'pry'

@@ -5,12 +5,12 @@ namespace :channel do
     site_id = args.site_id
     if site_id
       Channel.where(site_id: site_id).preload(:site).each do |channel|
-        puts "[channel] process channel 0 '#{channel.url}'"
+        puts "[crawler] enqueue #{channel.site.name} 0 '#{channel.url}'"
         channel.enqueue_links
       end
     else
       Channel.all.preload(:site).each do |channel|
-        puts "[channel] process channel 0 '#{channel.url}'"
+        puts "[crawler] enqueue #{channel.site.name} 0 '#{channel.url}'"
         channel.enqueue_links
       end
     end
@@ -38,16 +38,17 @@ namespace :channel do
 
 
   desc 'clean_site_channel'
-  task clean_site_channel: :environment do
-    Site.delete_all
-    Channel.delete_all
-    puts "[channel] delete-all 0 ''"
+  task clean_all: :environment do
+    sites= Site.delete_all
+    channels = Channel.delete_all
+    puts "[channel] clean 0 'sites:#{sites} | channels: #{channels}'"
   end
 
 
-
   desc 'create_all_channels'
-  task create_all_channels: [:clean_site_channel, :create_channels_91jobs, :create_channels_wutongguo] do
-    puts "[channel] create-channels all 0 'succ'"
+  task create_all_channels: ['clean_all', 'job91:create_all', 'js_market:create_all'] do
+    sites_count = Site.all.count
+    channels_count = Channel.all.count
+    puts "[crawler] create_channels all 0 'sites:#{sites_count} | channels: #{channels_count}'"
   end
 end

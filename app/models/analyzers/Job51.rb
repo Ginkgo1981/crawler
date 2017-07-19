@@ -67,9 +67,9 @@ class Job51 < Analyzer
           company_scale: company_scale,
           company_address: company_address,
           company_description: company_description,
-          company_url: company_url
+          company_origin_url: company_url
       }
-      write_to_redis json, '51job'
+      write_to_redis json, '51job_json_queue'
       puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
     rescue Exception => e
       puts "[crawler] get_link #{self.class.to_s} 1 '#{e.to_s}'"

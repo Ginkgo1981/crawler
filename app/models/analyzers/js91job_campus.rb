@@ -52,7 +52,7 @@ class Js91jobCampus < Analyzer
           company_mobile: company_mobile,
           company_description: company_description
       }
-      write_to_redis json, '91job_campus'
+      write_to_redis json, '91job_campus_json_queue'
       puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"

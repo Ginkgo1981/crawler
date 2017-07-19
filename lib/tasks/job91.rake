@@ -1,5 +1,11 @@
 namespace :job91 do
 
+  desc 'create all 91job related website'
+  task create_all: [:js_normal,:js_campus,:hb_normal,:hb_campus, :others_normal, :others_campus] do
+
+
+  end
+
   desc 'js_normal'
   task js_normal: :environment do
     url = 'http://www.91job.gov.cn/default/schoollist'
@@ -97,8 +103,21 @@ namespace :job91 do
 
 
 
-
-
-
-
+  #其它 91job jobs
+  desc 'others_campus'
+  task others_campus: :environment do
+    text=File.open('job_seeds/91_others.txt').read
+    text.each_line do |line|
+      puts line
+      name,url = line.split " "
+      site = Site.find_or_create_by! name: name, url: url
+      (1..10).each_with_index do |i|
+        channel = Channel.create! site: site,
+                                  name: "#{site.name}-p#{i}",
+                                  status: 1,
+                                  url: "#{site.url}/campus/index?page=#{i}"
+        puts "[channel] create-channels  others_campus 0 '#{channel.name}'"
+      end
+    end
+  end
 end

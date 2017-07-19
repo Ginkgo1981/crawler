@@ -67,7 +67,7 @@ class Wutongguo < Analyzer
             }
         json_company_jobs << json_company.merge(json_job)
       end
-      write_to_redis json_company_jobs, 'company_job_json_queue'
+      write_to_redis json_company_jobs, 'wutongguo_json_queue'
       puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}'"
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}'"
