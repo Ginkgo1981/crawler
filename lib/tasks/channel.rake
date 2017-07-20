@@ -11,7 +11,7 @@ namespace :channel do
     else
       count = 0
       while(true)
-        count = $redis.zcount 'crawler:link_queue', "-inf", "+inf"
+        count = $redis.zcount 'link_queue', "-inf", "+inf"
         if count < 1000
           puts "[crawler] enqueue begin #{count} '' ''"
           Channel.where(status: 0).preload(:site).each do |channel|
