@@ -15,7 +15,7 @@ namespace :js_market do
                                 name: "#{site.name}_p#{i}",
                                 status: 0,
                                 url: "#{site.url}/index.php?m=&c=jobs&a=jobs_list&education=70&p=#{i}"
-      puts "[crawler] create_channels 0 '#{channel.name}' ''"
+      puts "[crawler] create_channels succ 0 '#{channel.name}' '#{channel.url}'"
     end
   end
 
@@ -27,7 +27,7 @@ namespace :js_market do
                               name: "#{site.name}",
                               status: 0,
                               url: 'http://www.wxrcw.com/more/hot'
-    puts "[crawler] create_channels 0 '#{channel.name}' ''"
+    puts "[crawler] create_channels succ 0 '#{channel.name}' '#{channel.url}'"
   end
 
 
@@ -39,7 +39,7 @@ namespace :js_market do
                       name: "#{site.name}_p#{i}",
                       status: 0,
                       url: "http://www.hrol.cn/jobs/jobs-list.php?sort=rtime&page=#{i}"
-      puts "[crawler] create_channels 0 '#{channel.name}' ''"
+      puts "[crawler] create_channels succ 0 '#{channel.name}' '#{channel.url}'"
     end
   end
 
@@ -51,7 +51,7 @@ namespace :js_market do
                       name: "#{site.name}_p#{i}",
                       status: 0,
                       url: "http://www.ntr.com.cn/jobs/jobs_list/sort/rtime/page/#{i}.html"
-      puts "[crawler] create_channels 0 '#{channel.name}' ''"
+      puts "[crawler] create_channels succ 0 '#{channel.name}' '#{channel.url}'"
     end
   end
 
@@ -63,7 +63,7 @@ namespace :js_market do
                       name: "#{site.name}_p#{i}",
                       status: 0,
                       url: "http://www.yzjob.net.cn/job_list.shtml?postType=&workPlace=&dayNum=&unitName=&postName=&curPage=#{i}"
-      puts "[crawler] create_channels 0 '#{channel.name}' ''"
+      puts "[crawler] create_channels succ 0 '#{channel.name}' '#{channel.url}'"
     end
   end
 
