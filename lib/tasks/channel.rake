@@ -11,21 +11,26 @@ namespace :channel do
     else
       count = 0
       while(true)
-        count = $redis.zcount 'link_queue', "-inf", "+inf"
-        puts "[crawler] enqueue try #{count} '' ''"
-        if count < 1000
-          puts "[crawler] enqueue begin #{count} '' ''"
-          Channel.where(status: 0).preload(:site).each do |channel|
-            begin
-              puts "[crawler] enqueue succ 0 '#{channel.site.name}' '#{channel.url}'"
-              channel.enqueue_links
-            rescue Exception => e
-              puts "[crawler] enqueue fail 0 '#{channel.site.name}: #{e.to_s}' '#{channel.url}'"
+        begin
+          count = $redis.zcount 'link_queue', "-inf", "+inf"
+          puts "[crawler] enqueue try #{count} '' ''"
+          if count < 1000
+            puts "[crawler] enqueue begin #{count} '' ''"
+            Channel.where(status: 0).preload(:site).each do |channel|
+              begin
+                puts "[crawler] enqueue succ 0 '#{channel.site.name}' '#{channel.url}'"
+                channel.enqueue_links
+              rescue Exception => e
+                puts "[crawler] enqueue fail 0 '#{channel.site.name}: #{e.to_s}' '#{channel.url}'"
+              end
             end
+            puts "[crawler] enqueue finish 0 '' ''"
           end
-          puts "[crawler] enqueue finish 0 '' ''"
+          sleep 10*60
+        rescue Exception => e
+          sleep 10*60
+          puts "[crawler] enqueue error 0 '#{e.to_s}' ''"
         end
-        sleep 10*60
       end
     end
   end
