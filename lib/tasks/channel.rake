@@ -24,8 +24,8 @@ namespace :channel do
             end
           end
           puts "[crawler] enqueue finish 0 '' ''"
-          sleep 10*60
         end
+        sleep 10*60
       end
     end
   end
