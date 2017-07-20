@@ -9,7 +9,7 @@ namespace :channel do
         channel.enqueue_links
       end
     else
-      while(true)
+      # while(true)
         Channel.where(status: 0).preload(:site).each do |channel|
           begin
             puts "[crawler] enqueue succ 0 '#{channel.site.name}' '#{channel.url}'"
@@ -19,7 +19,7 @@ namespace :channel do
           end
 
         end
-      end
+      # end
       puts "[crawler] enqueue finish 0 '' ''"
     end
   end
