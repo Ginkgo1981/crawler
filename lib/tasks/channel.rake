@@ -26,7 +26,6 @@ namespace :channel do
             end
             puts "[crawler] enqueue finish 0 '' ''"
           end
-          sleep 10*60
         rescue Exception => e
           sleep 10*60
           puts "[crawler] enqueue error 0 '#{e.to_s}' ''"

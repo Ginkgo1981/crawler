@@ -1,6 +1,6 @@
 default: &DEFAULTS
-  host: r-uf6a738cd1a60274.redis.rds.aliyuncs.com
-  password: DVg0ZurdT2s
+  host: 139.224.65.151
+  password:
   port: 6379
 
 development:
