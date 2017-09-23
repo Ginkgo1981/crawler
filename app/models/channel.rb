@@ -16,10 +16,10 @@
 class Channel < ApplicationRecord
   belongs_to :site
 
-  def enqueue_links
+  def self.enqueue_links name, url
     # analyzer = self.analyzer.constantize.new
-    analyzer = Analyzer.factory(self.url)
-    link_urls = analyzer.get_links(self.url)
+    analyzer = Analyzer.factory(url)
+    link_urls = analyzer.get_links(url)
     link_urls.each do |url|
       cache_url =
           if url.scan(/91job.*job/).present?
@@ -33,12 +33,12 @@ class Channel < ApplicationRecord
           else
             url
           end
-      if $redis.sismember 'cache_urls', cache_url
-        puts "[crawler] enqueue hit_cache 0 '#{self.name.to_s}' '#{cache_url}'"
+      if $redis.sismember 'cached_links', cache_url
+        puts "[crawler] enqueue hit_cache 0 '#{name}' '#{cache_url}'"
       else
-        $redis.sadd 'cache_urls', cache_url #cache
-        $redis.zadd 'link_queue', 100, url #queue
-        puts "[crawler] enqueue succ 0 '#{self.name.to_s}' '#{url}'"
+        $redis.sadd 'cached_links', cache_url #cache
+        $redis.zadd 'enqueued_links', 100, url #queue
+        puts "[crawler] enqueue succ 0 '#{name}' '#{url}'"
       end
     end
   end
