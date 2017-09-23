@@ -7,7 +7,7 @@ namespace :js_market do
 
   desc '武进' #武进
   task wj: :environment do
-    site = Site.create! name: '武进人才网', url: 'http://www.wjjy.gov.cn'
+    site = Site.create! name: '武进人才网', url: 'http://www.wjjy.gov.cn', status: 0
     (1..10).each_with_index do |i|
       channel = Channel.create! site: site,
                                 name: "#{site.name}_p#{i}",
@@ -20,7 +20,7 @@ namespace :js_market do
 
   desc '无锡' #无锡
   task wx: :environment do
-    site = Site.create! name: '无锡', url: 'http://www.wxrcw.com'
+    site = Site.create! name: '无锡', url: 'http://www.wxrcw.com', status: 0
     channel = Channel.create! site: site,
                               name: "#{site.name}",
                               status: 0,
@@ -31,7 +31,7 @@ namespace :js_market do
 
   desc '镇江' #
   task zj: :environment do
-    site = Site.create! name: '镇江人才网', url: 'http://www.hrol.cn'
+    site = Site.create! name: '镇江人才网', url: 'http://www.hrol.cn',status: 0
     (1..10).each_with_index do |i|
       channel = Channel.create! site: site,
                       name: "#{site.name}_p#{i}",
@@ -43,7 +43,7 @@ namespace :js_market do
 
   desc '南通' #
   task nt: :environment do
-    site = Site.create! name: '江海人才网(南通)', url: 'http://www.ntr.com.cn'
+    site = Site.create! name: '江海人才网(南通)', url: 'http://www.ntr.com.cn', status: 0
     (1..10).each_with_index do |i|
       channel = Channel.create! site: site,
                       name: "#{site.name}_p#{i}",
@@ -55,7 +55,7 @@ namespace :js_market do
 
   desc '扬州' #
   task yz: :environment do
-    site = Site.create! name: '扬州人才网', url: 'http://www.yzjob.net.cn'
+    site = Site.create! name: '扬州人才网', url: 'http://www.yzjob.net.cn', status: 0
     (1..10).each_with_index do |i|
       channel = Channel.create! site: site,
                       name: "#{site.name}_p#{i}",

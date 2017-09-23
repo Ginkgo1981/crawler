@@ -9,6 +9,7 @@
 #  analyzer   :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  status     :integer          default(1)
 #
 
 class Site < ApplicationRecord

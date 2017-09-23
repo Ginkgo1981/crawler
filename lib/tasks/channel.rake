@@ -1,5 +1,5 @@
 namespace :channel do
-  desc 'read from channel, then enqueue links '
+  desc 'read from mysql, then enqueue links '
   task :enqueue, [:site_id] => :environment do |t, args|
     puts "args: #{args}"
     site_id = args.site_id
@@ -15,16 +15,16 @@ namespace :channel do
           count = $redis.zcount 'link_queue', "-inf", "+inf"
           puts "[crawler] enqueue try #{count} '' ''"
           if count < 1000
-            puts "[crawler] enqueue begin #{count} '' ''"
-            Channel.where(status: 0).preload(:site).each do |channel|
+            # puts "[crawler] enqueue begin #{count} '' ''"
+            Channel.joins(:site).where("sites.status=1").preload(:site).each do |channel|
               begin
                 puts "[crawler] enqueue succ 0 '#{channel.site.name}' '#{channel.url}'"
-                channel.enqueue_links
+                # channel.enqueue_links
               rescue Exception => e
                 puts "[crawler] enqueue fail 0 '#{channel.site.name}: #{e.to_s}' '#{channel.url}'"
               end
             end
-            puts "[crawler] enqueue finish 0 '' ''"
+            puts "[crawler] enqueue finish 0 '#{Time.now.to_s}' ''"
           end
         rescue Exception => e
           sleep 10*60
