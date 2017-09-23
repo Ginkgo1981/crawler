@@ -10,7 +10,7 @@ namespace :channel do
       end
     else
       count = 0
-      while(true)
+      # while(true)
         begin
           count = $redis.zcount 'link_queue', "-inf", "+inf"
           puts "[crawler] enqueue try #{count} '' ''"
@@ -31,7 +31,7 @@ namespace :channel do
           sleep 10*60
           puts "[crawler] enqueue error 0 '#{e.to_s}' ''"
         end
-      end
+      # end
     end
   end
 

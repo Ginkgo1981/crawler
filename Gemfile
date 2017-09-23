@@ -10,21 +10,16 @@ gem 'mysql2'
 gem 'faraday'
 gem 'redis'
 gem 'redis-namespace'
-
 gem 'puma', '~> 3.0'
-
 gem 'mechanize'
 gem 'nokogiri'
 gem 'listen'
-
-
 gem 'selenium'
 gem 'selenium-webdriver'
-
 gem 'elasticsearch'
 # gem 'tesseract-ocr'
 gem 'faraday'
-
+gem 'whenever', :require => false
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
