@@ -1,5 +1,6 @@
 default: &DEFAULTS
-  host: localhost
+  host: r-uf6a738cd1a60274.redis.rds.aliyuncs.com
+  password: DVg0ZurdT2s
   port: 6379
 
 development:
