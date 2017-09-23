@@ -19,7 +19,7 @@ namespace :channel do
             Channel.joins(:site).where("sites.status=1").preload(:site).each do |channel|
               begin
                 puts "[crawler] enqueue succ 0 '#{channel.site.name}' '#{channel.url}'"
-                # channel.enqueue_links
+                channel.enqueue_links
               rescue Exception => e
                 puts "[crawler] enqueue fail 0 '#{channel.site.name}: #{e.to_s}' '#{channel.url}'"
               end
