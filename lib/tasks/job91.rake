@@ -1,7 +1,7 @@
 namespace :job91 do
 
-  desc 'create all 91job related website'
-  task create_all: [:js_normal,:js_campus,:hb_normal,:hb_campus, :others_normal, :others_campus] do
+  desc 'all'
+  task all: [:js_normal,:js_campus,:hb_normal,:hb_campus, :others_normal, :others_campus] do
 
 
   end

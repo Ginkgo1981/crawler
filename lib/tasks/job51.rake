@@ -1,10 +1,10 @@
 namespace :job51 do
-  desc 'create_channels_51jobs'
-  task create_all: :environment do
+  desc 'all'
+  task all: :environment do
     site = Site.create! name: '51job', url: 'http://www.51job.com'
     ['nanjing'].each do |city|
       (1..2).each_with_index do |i|
-        channel = Channel.create! site: site,
+        Channel.create! site: site,
                                   name: "#{site.name}_p#{i}",
                                   status: 0,
                                   url: "http://jobs.51job.com/nanjing/p#{i}"

@@ -1,11 +1,9 @@
 namespace :js_market do
 
-
-  desc '创建江苏省内人才市场'
-  task create_all: [:wj,:wx, :zj, :nt, :yz] do
+  desc 'all'
+  task all: [:wj,:wx, :zj, :nt, :yz] do
 
   end
-
 
   desc '武进' #武进
   task wj: :environment do
@@ -66,6 +64,4 @@ namespace :js_market do
       puts "[crawler] create_channels succ 0 '#{channel.name}' '#{channel.url}'"
     end
   end
-
-
 end

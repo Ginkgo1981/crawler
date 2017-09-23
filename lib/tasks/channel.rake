@@ -57,7 +57,7 @@ namespace :channel do
 
 
   desc 'clean_site_channel'
-  task clean_all: :environment do
+  task clean: :environment do
     sites= Site.delete_all
     channels = Channel.delete_all
     puts "[channel] clean 0 'sites:#{sites} | channels: #{channels}'"
@@ -65,7 +65,7 @@ namespace :channel do
 
 
   desc 'create_all_channels'
-  task create_all_channels: ['clean_all', 'job91:create_all', 'js_market:create_all'] do
+  task create:  %w(job91:all job51:all js_market:all wutongguo:all) do
     sites_count = Site.all.count
     channels_count = Channel.all.count
     puts "[crawler] create_channels all 0 'sites:#{sites_count} | channels: #{channels_count}'"
