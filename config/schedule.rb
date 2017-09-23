@@ -23,6 +23,6 @@ env :PATH, ENV['PATH']
 set :output, '/mnt/logs/cron.log'
 
 every 1.day, at: '9:40 pm' do
-  rake "channel:enqueue"
+  rake 'channel:enqueue'
 end
 
