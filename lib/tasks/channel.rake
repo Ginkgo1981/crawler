@@ -28,7 +28,7 @@ namespace :channel do
   end
 
   desc 'read from redis, fetch the content then analyze the content' #stand alone
-  task fetch_and_equeue_company_job_json: :environment do
+  task fetch_and_enqueue_company_job_json: :environment do
     flag = true
     while flag
       begin
