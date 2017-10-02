@@ -10,8 +10,6 @@ namespace :channel do
   desc 'enqueue links' #stand alone
   task enqueue_links: :environment do
     flag = true
-
-
     while flag
       begin
         c = $redis.lpop 'enqueued_channels_list'
@@ -30,10 +28,10 @@ namespace :channel do
   end
 
   desc 'read from redis, fetch the content then analyze the content' #stand alone
-  task fetch_and_equeue_json: :environment do
-    while (true)
+  task fetch_and_equeue_company_job_json: :environment do
+    flag = true
+    while flag
       begin
-
         link_url = $redis.lpop 'enqueued_links_list'
         # link_url = $redis.zrange('enqueued_links', 0, 0).first
         if link_url.present?
@@ -47,8 +45,9 @@ namespace :channel do
           end
           puts "[crawler] dequeue succ 0 '' '#{link_url}'"
         else
-          puts "[crawler] dequeue fail 0 'empty' ''"
-          sleep 10
+          flag = false
+          puts "[crawler] dequeue fail 0 'empty' '#{Time.now.to_s}'"
+          # sleep 10
         end
       rescue Exception => e
         puts "[crawler] dequeue fail 0 '#{e.to_s}' '#{link_url}'"
