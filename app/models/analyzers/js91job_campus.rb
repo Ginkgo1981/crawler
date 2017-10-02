@@ -60,8 +60,9 @@ class Js91jobCampus < Analyzer
           company_origin_url: company_page.uri.to_s
 
       }
-      write_to_redis json, '91job_campus_json_queue'
-      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
+      # write_to_redis json
+      # puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
+      json
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end9

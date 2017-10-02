@@ -60,12 +60,13 @@ class Analyzer
   end
 
 
-  def write_to_redis entity, queue
+  def write_to_redis entity
     begin
-      $redis.zadd queue, 100, entity.to_json #queue
-      puts "[crawler] redis_zadd succ 0 '#{self.class.to_s}' '#{queue}'"
+      # $redis.zadd queue, 100, entity.to_json #queue
+      $redis.rpush 'company_job_json_list',entity.to_json #queue
+      # puts "[crawler] redis_zadd succ 0 '#{self.class.to_s}' '#{queue}'"
     rescue Exception => e
-      puts "[crawler] redis_zadd fail 0 '#{self.class.to_s}' '#{queue}'"
+      # puts "[crawler] redis_zadd fail 0 '#{self.class.to_s}' '#{queue}'"
     end
     # $es.index index: 'crawler', type: 'company_job', body: entity
   end

@@ -54,8 +54,9 @@ class JsMarketWuxi< Analyzer
             job_description: job_description
         }
         json = job_json.merge(company_json)
-        write_to_redis json, 'js_market_json_queue'
-        puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
+        # write_to_redis json
+        # puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
+        json
       end
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"

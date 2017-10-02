@@ -71,10 +71,11 @@ class Wutongguo < Analyzer
             }
         json_company_jobs << json_company.merge(json_job)
       end
-      json_company_jobs.each do |j|
-        puts "[crawler] get_content #{self.class.to_s} 0 '#{j.to_json}' '#{url}'"
-        write_to_redis j, 'wutongguo_json_queue'
-      end
+      json_company_jobs
+      # json_company_jobs.each do |j|
+      #   puts "[crawler] get_content #{self.class.to_s} 0 '#{j.to_json}' '#{url}'"
+      #   write_to_redis j
+      # end
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end

@@ -68,8 +68,9 @@ class JsMarketNantong < Analyzer
           company_tel: company_tel,
           company_email: company_email
       }
-      write_to_redis json, 'js_market_json_queue'
-      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
+      json
+      # write_to_redis json
+      # puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
