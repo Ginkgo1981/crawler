@@ -9,20 +9,22 @@ namespace :channel do
 
   desc 'enqueue links' #stand alone
   task enqueue_links: :environment do
-    while true
+    flag = true
+
+
+    while flag
       begin
         c = $redis.lpop 'enqueued_channels_list'
         if c
-          name, url = c.split /\s/
+          name, url = c.strip.split /\s/
           Channel.enqueue_links name, url
           puts "[crawler] enqueue_links succ 0 '#{name}' '#{url}'"
         else
+          flag = false
           puts "[crawler] enqueue_links finish 0 '#{Time.now.to_s}' ''"
-          sleep 10*60
         end
       rescue Exception => e
-        puts "[crawler] enqueue_links error 0 '#{e.to_s}' ''"
-        sleep 1*60
+        puts "[crawler] enqueue_links error 0 '#{e.to_s}' '#{c}'"
       end
     end
   end
