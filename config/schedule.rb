@@ -18,11 +18,25 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-env :PATH, ENV['PATH']
+# env :PATH, ENV['PATH']
+#
+# set :output, '/mnt/logs/cron.log'
+#
+# every 1.day, at: '10:40 pm' do
+#   rake 'channel:enqueue_channels'
+# end
 
-set :output, '/mnt/logs/cron.log'
 
-every 1.day, at: '10:40 pm' do
-  rake 'channel:enqueue_channels'
+every :day, at: %w(10:18pm) do
+  rake 'channel:enqueue_channels > /mnt/logs/enqueue_channels.log 2>&1'
+end
+
+
+every :day, at: %w(10:20pm) do
+  rake 'channel:enqueue_links > /mnt/logs/enqueue_channels.log 2>&1'
+end
+
+every :day, at: %w(10:22pm) do
+  rake 'channel:fetch_and_enqueue_company_job_json > /mnt/logs/fetch_and_enqueue_company_job_json.log 2>&1'
 end
 
