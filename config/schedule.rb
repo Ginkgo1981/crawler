@@ -27,16 +27,16 @@
 # end
 
 
-every :day, at: %w(10:18pm) do
-  rake 'channel:enqueue_channels > /mnt/logs/enqueue_channels.log 2>&1'
-end
-
-
-every :day, at: %w(10:20pm) do
-  rake 'channel:enqueue_links > /mnt/logs/enqueue_channels.log 2>&1'
-end
-
-every :day, at: %w(10:22pm) do
-  rake 'channel:fetch_and_enqueue_company_job_json > /mnt/logs/fetch_and_enqueue_company_job_json.log 2>&1'
-end
+# every :day, at: %w(10:18pm) do
+#   rake 'channel:enqueue_channels > /mnt/logs/enqueue_channels.log 2>&1'
+# end
+#
+#
+# every :day, at: %w(10:20pm) do
+#   rake 'channel:enqueue_links > /mnt/logs/enqueue_channels.log 2>&1'
+# end
+#
+# every :day, at: %w(10:22pm) do
+#   rake 'channel:fetch_and_enqueue_company_job_json > /mnt/logs/fetch_and_enqueue_company_job_json.log 2>&1'
+# end
 
