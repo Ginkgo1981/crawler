@@ -1,13 +1,14 @@
 default: &DEFAULTS
-  host: 139.224.65.151
   password:
   port: 6379
 
 development:
   <<: *DEFAULTS
+  host: localhost
   namespace: skymatters
 
 production:
   <<: *DEFAULTS
+  host: 139.224.65.151
   namespace: skymatters
 

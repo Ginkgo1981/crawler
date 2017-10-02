@@ -7,7 +7,6 @@ end
 
 gem 'rails', '~> 5.0.2'
 gem 'mysql2'
-gem 'faraday'
 gem 'redis'
 gem 'redis-namespace'
 gem 'puma', '~> 3.0'

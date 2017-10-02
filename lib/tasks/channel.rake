@@ -62,4 +62,5 @@ namespace :channel do
     channels_count = Channel.all.count
     puts "[crawler] create_channels all 0 'sites:#{sites_count} | channels: #{channels_count}'"
   end
+
 end

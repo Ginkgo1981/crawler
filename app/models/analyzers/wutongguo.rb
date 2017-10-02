@@ -24,10 +24,11 @@ class Wutongguo < Analyzer
       company_name = doc.css('.HeadContent>div')[0].text
       company_city, company_scale, company_kind, company_category = doc.css('.HeadContent>div')[1].text.strip.split /\|/
       company_description = doc.css('.brod_text').text.strip
+      job_published_at = Date.strptime(doc.css('.date .txt_grey89').text.scan(/(\d{4}年\d{1,2}月\d{1,2}日)/).flatten[0], "%Y年%m月%d日").strftime("%Y-%m-%d")
       #解析公司简介中的信息,找出对应的 email mobile
-      company_email = (company_description || '').scan(EMAIL_REG).try(:first)
-      company_mobile =(company_description || '').scan(MOBILE_REG).try(:first)
-      company_tel =   (company_description || '').scan(TEL_REG).try(:first)
+      # company_email = (company_description || '').scan(EMAIL_REG).try(:first)
+      # company_mobile =(company_description || '').scan(MOBILE_REG).try(:first)
+      # company_tel =   (company_description || '').scan(TEL_REG).try(:first)
       json_company =
           {
               company_name: company_name,
@@ -36,11 +37,12 @@ class Wutongguo < Analyzer
               company_kind: company_kind,
               company_category: company_category,
               company_description: company_description,
-              company_email: company_email,
-              company_mobile: company_mobile,
-              company_tel: company_tel
+              # company_email: company_email,
+              # company_mobile: company_mobile,
+              # company_tel: company_tel,
+              company_origin_url: url
           }
-      job_urls = doc.css('.bro_job').select{|a| a['href'] =~ /job/}.map { |a| "http://m.wutongguo.com#{a['href']}" }
+      job_urls = doc.css('.bro_job').select { |a| a['href'] =~ /job/ }.map { |a| "http://m.wutongguo.com#{a['href']}" }
       job_urls.each do |job_url|
         # puts "[analyzer] wutongguo get_content job_url #{job_url}"
         job_page = web_agent.get job_url
@@ -63,12 +65,16 @@ class Wutongguo < Analyzer
                 job_type: job_type,
                 job_city: job_city,
                 job_majors: job_majors,
-                job_description: job_description
+                job_description: job_description,
+                job_origin_url: job_page.uri.to_s,
+                job_published_at: job_published_at
             }
         json_company_jobs << json_company.merge(json_job)
       end
-      write_to_redis json_company_jobs, 'wutongguo_json_queue'
-      puts "[crawler] get_content #{self.class.to_s} 0 '#{json.to_json}' '#{url}'"
+      json_company_jobs.each do |j|
+        puts "[crawler] get_content #{self.class.to_s} 0 '#{j.to_json}' '#{url}'"
+        write_to_redis j, 'wutongguo_json_queue'
+      end
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
     end
