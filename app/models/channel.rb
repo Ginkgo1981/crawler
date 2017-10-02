@@ -34,11 +34,11 @@ class Channel < ApplicationRecord
             url
           end
       if $redis.sismember 'cached_links', cache_url
-        puts "[crawler] enqueue hit_cache 0 '#{name}' '#{cache_url}'"
+        puts "[crawler] enqueue_links hit_cache 0 '#{name}' '#{cache_url}'"
       else
         $redis.sadd 'cached_links', cache_url #cache
         $redis.zadd 'enqueued_links', 100, url #queue
-        puts "[crawler] enqueue succ 0 '#{name}' '#{url}'"
+        puts "[crawler] enqueue_links succ 0 '#{name}' '#{url}'"
       end
     end
   end

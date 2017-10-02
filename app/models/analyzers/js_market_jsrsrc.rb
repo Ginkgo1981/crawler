@@ -7,7 +7,7 @@ class JsMarketJsrsrc < Analyzer
     (0..1).each_with_index do |i|
       sleep 1
       url = "http://www.jsrsrc.com/jobs/jobs-list.php?sort=rtime&page=#{i}"
-      puts "[crawler] enqueue #{self.class.to_s} 0 '' '#{url}'"
+      puts "[crawler] enqueue_links #{self.class.to_s} 0 '' '#{url}'"
       self.get_links url
     end
   end
@@ -41,7 +41,7 @@ class JsMarketJsrsrc < Analyzer
       link_urls = doc.css('.jobs_name a').map{|a| "#{a['href']}"}
       link_urls.each do |url|
         self.get_content url
-        puts "[crawler] enqueue #{self.class.to_s} 0 '' '#{url}'"
+        puts "[crawler] enqueue_links #{self.class.to_s} 0 '' '#{url}'"
       end
 
     rescue Exception => e

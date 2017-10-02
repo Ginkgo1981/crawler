@@ -28,13 +28,15 @@ class Analyzer
   end
 
   def Analyzer.factory(url = nil)
-    if url =~ /91job.gov.cn\/campus/ || url =~ /njnu.jysd.com\/campus/ ||  url =~ /91wllm.com\/campus/ ||  url =~ /zjut.jysd.com\/campus/ || url =~ /cup.jysd.com\/campus/ ||
-        url =~ /job.wzu.edu.cn\/campus/ || url =~ /jyb.zstu.edu.cn\/campus/ || url =~ /zjnu.jysd.com\/campus/ || url =~ /nbpt.jysd.com\/campus/
-        url =~ /jyw.jhc.cn\/campus/  || url =~ /jlnu.jysd.com\/campus/ || url =~ /gdou.jysd.com\/campus/ || url =~ /bwu.jysd.com\/campus/
+    # if url =~ /91job.gov.cn\/campus/ || url =~ /njnu.jysd.com\/campus/ ||  url =~ /91wllm.com\/campus/ ||  url =~ /zjut.jysd.com\/campus/ || url =~ /cup.jysd.com\/campus/ ||
+    #     url =~ /job.wzu.edu.cn\/campus/ || url =~ /jyb.zstu.edu.cn\/campus/ || url =~ /zjnu.jysd.com\/campus/ || url =~ /nbpt.jysd.com\/campus/
+    #     url =~ /jyw.jhc.cn\/campus/  || url =~ /jlnu.jysd.com\/campus/ || url =~ /gdou.jysd.com\/campus/ || url =~ /bwu.jysd.com\/campus/
+    if url =~ /campus/
       Js91jobCampus.new
-    elsif  url =~ /91job.gov.cn\/job/ || url =~ /njnu.jysd.com\/job/ || url =~ /91wllm.com\/job/ ||  url =~ /zjut.jysd.com\/job/ || url =~ /cup.jysd.com\/job/ ||
-        url =~ /job.wzu.edu.cn\/job/ || url =~ /jyb.zstu.edu.cn\/job/ || url =~ /zjnu.jysd.com\/job/  || url =~ /nbpt.jysd.com\/job/ ||
-        url =~ /jyw.jhc.cn\/job/  || url =~ /jlnu.jysd.com\/job/ || url =~ /gdou.jysd.com\/job/   || url =~ /bwu.jysd.com\/job/
+    # elsif  url =~ /91job.gov.cn\/job/ || url =~ /njnu.jysd.com\/job/ || url =~ /91wllm.com\/job/ ||  url =~ /zjut.jysd.com\/job/ || url =~ /cup.jysd.com\/job/ ||
+    #     url =~ /job.wzu.edu.cn\/job/ || url =~ /jyb.zstu.edu.cn\/job/ || url =~ /zjnu.jysd.com\/job/  || url =~ /nbpt.jysd.com\/job/ ||
+    #     url =~ /jyw.jhc.cn\/job/  || url =~ /jlnu.jysd.com\/job/ || url =~ /gdou.jysd.com\/job/   || url =~ /bwu.jysd.com\/job/
+    elsif url =~ /\/job/
       Js91jobNormal.new
     elsif url =~ /wutongguo.com/
       Wutongguo.new

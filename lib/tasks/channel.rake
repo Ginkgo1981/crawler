@@ -3,7 +3,7 @@ namespace :channel do
   task enqueue_channels: :environment do
     Channel.joins(:site).where("sites.status=1").preload(:site).each do |channel|
       puts "#{channel.name} #{channel.url}"
-      $redis.sadd 'enqueued_channels', "#{channel.name} #{channel.url}"
+      $redis.rpush 'enqueued_channels', "#{channel.name} #{channel.url}"
     end
   end
 
@@ -11,24 +11,24 @@ namespace :channel do
   task enqueue_links: :environment do
     while true
       begin
-        c = $redis.spop 'enqueued_channels'
+        c = $redis.lpop 'enqueued_channels'
         if c
           name, url = c.split /\s/
           Channel.enqueue_links name, url
-          puts "[crawler] enqueue succ 0 '#{name}' '#{url}'"
+          puts "[crawler] enqueue_links succ 0 '#{name}' '#{url}'"
         else
-          puts "[crawler] enqueue finish 0 '#{Time.now.to_s}' ''"
+          puts "[crawler] enqueue_links finish 0 '#{Time.now.to_s}' ''"
           sleep 10*60
         end
       rescue Exception => e
-        puts "[crawler] enqueue error 0 '#{e.to_s}' ''"
+        puts "[crawler] enqueue_links error 0 '#{e.to_s}' ''"
         sleep 1*60
       end
     end
   end
 
   desc 'read from redis, fetch the content then analyze the content' #stand alone
-  task dequeue: :environment do
+  task fetch_and_equeue_json: :environment do
     while (true)
       begin
         link_url = $redis.zrange('enqueued_links', 0, 0).first
