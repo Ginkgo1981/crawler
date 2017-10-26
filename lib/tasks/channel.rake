@@ -1,18 +1,26 @@
 namespace :channel do
   desc 'enqueue channels' # run at loop
   task enqueue_channels: :environment do
+    SlackService.alert "[crawler] enqueue_channels started"
+    count = 0
     Channel.joins(:site).where("sites.status=1").preload(:site).each do |channel|
       puts "#{channel.name} #{channel.url}"
+      count += 1
       $redis.rpush 'enqueued_channels_list', "#{channel.name} #{channel.url}"
     end
+    SlackService.alert "[crawler] enqueue_channels end #{count}"
   end
 
   desc 'enqueue links' #stand alone
   task enqueue_links: :environment do
+    SlackService.alert "[crawler] enqueue_links started"
     flag = true
+    count  = 0
     while flag
       begin
         c = $redis.lpop 'enqueued_channels_list'
+        count += 1
+        SlackService.alert "[crawler] enqueue_links processing #{count}"  if count % 100 == 0
         if c
           name, url = c.strip.split /\s/
           Channel.enqueue_links name, url
@@ -22,17 +30,23 @@ namespace :channel do
           puts "[crawler] enqueue_links finish 0 '#{Time.now.to_s}' ''"
         end
       rescue Exception => e
+        SlackService.alert "[crawler] enqueue_links error #{count} #{c} #{e.to_s}"
         puts "[crawler] enqueue_links error 0 '#{e.to_s}' '#{c}'"
       end
     end
+    SlackService.alert "[crawler] enqueue_links end #{count}"
   end
 
   desc 'read from redis, fetch the content then analyze the content' #stand alone
   task fetch_and_enqueue_company_job_json: :environment do
+    SlackService.alert "[crawler] fetch_and_enqueue_company_job_json started"
     flag = true
+    count  = 0
     while flag
       begin
         link_url = $redis.lpop 'enqueued_links_list'
+        count += 1
+        SlackService.alert "[crawler] fetch_and_enqueue_company_job_json processing #{count}"  if count % 100 == 0
         # link_url = $redis.zrange('enqueued_links', 0, 0).first
         if link_url.present?
           # $redis.zrem 'enqueued_links', link_url
@@ -50,9 +64,11 @@ namespace :channel do
           # sleep 10
         end
       rescue Exception => e
+        SlackService.alert "[crawler] fetch_and_enqueue_company_job_json error #{count} #{link_url} #{e.to_s}"
         puts "[crawler] dequeue fail 0 '#{e.to_s}' '#{link_url}'"
       end
     end
+    SlackService.alert "[crawler] fetch_and_enqueue_company_job_json started #{count}"
   end
 
 
