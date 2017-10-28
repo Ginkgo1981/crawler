@@ -20,7 +20,7 @@ namespace :channel do
       begin
         c = $redis.lpop 'enqueued_channels_list'
         count += 1
-        SlackService.alert "[crawler] enqueue_links processing #{count}"  if count % 100 == 0
+        SlackService.alert "[crawler] enqueue_links processing #{count}"  if count % 2000 == 0
         if c
           name, url = c.strip.split /\s/
           Channel.enqueue_links name, url
@@ -30,11 +30,11 @@ namespace :channel do
           puts "[crawler] enqueue_links finish 0 '#{Time.now.to_s}' ''"
         end
       rescue Exception => e
-        SlackService.alert "[crawler] enqueue_links error #{count} #{c} #{e.to_s}"
+        SlackService.alert "[crawler] enqueue_links error #{count} #{c} #{e.to_s}"  if count % 3 == 0
         puts "[crawler] enqueue_links error 0 '#{e.to_s}' '#{c}'"
       end
     end
-    SlackService.alert "[crawler] enqueue_links end #{count}"
+    SlackService.alert "[crawler] enqueue_links ended #{count}"
   end
 
   desc 'read from redis, fetch the content then analyze the content' #stand alone
@@ -46,7 +46,7 @@ namespace :channel do
       begin
         link_url = $redis.lpop 'enqueued_links_list'
         count += 1
-        SlackService.alert "[crawler] fetch_and_enqueue_company_job_json processing #{count}"  if count % 100 == 0
+        SlackService.alert "[crawler] fetch_and_enqueue_company_job_json processing #{count}"  if count % 1000 == 0
         # link_url = $redis.zrange('enqueued_links', 0, 0).first
         if link_url.present?
           # $redis.zrem 'enqueued_links', link_url
@@ -64,11 +64,11 @@ namespace :channel do
           # sleep 10
         end
       rescue Exception => e
-        SlackService.alert "[crawler] fetch_and_enqueue_company_job_json error #{count} #{link_url} #{e.to_s}"
+        SlackService.alert "[crawler] fetch_and_enqueue_company_job_json error #{count} #{link_url} #{e.to_s}"  if count % 3 == 0
         puts "[crawler] dequeue fail 0 '#{e.to_s}' '#{link_url}'"
       end
     end
-    SlackService.alert "[crawler] fetch_and_enqueue_company_job_json started #{count}"
+    SlackService.alert "[crawler] fetch_and_enqueue_company_job_json ended #{count}"
   end
 
 
