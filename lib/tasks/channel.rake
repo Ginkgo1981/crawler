@@ -3,7 +3,7 @@ namespace :channel do
   task enqueue_channels: :environment do
     SlackService.alert "[crawler] enqueue_channels started"
     count = 0
-    Channel.joins(:site).where("sites.status=1").preload(:site).each do |channel|
+    Channel.joins(:site).where("channels.status=1 and sites.status=1").preload(:site).each do |channel|
       puts "#{channel.name} #{channel.url}"
       count += 1
       $redis.rpush 'enqueued_channels_list', "#{channel.name} #{channel.url}"
@@ -30,7 +30,7 @@ namespace :channel do
           puts "[crawler] enqueue_links finish 0 '#{Time.now.to_s}' ''"
         end
       rescue Exception => e
-        sleep count % 3
+        sleep count % 10
         SlackService.alert "[crawler] enqueue_links error #{count} #{c} #{e.to_s}"
         puts "[crawler] enqueue_links error 0 '#{e.to_s}' '#{c}'"
       end
@@ -65,7 +65,7 @@ namespace :channel do
           # sleep 10
         end
       rescue Exception => e
-        sleep count % 3
+        sleep count % 10
         SlackService.alert "[crawler] fetch_and_enqueue_company_job_json error #{count} #{link_url} #{e.to_s}"
         puts "[crawler] dequeue fail 0 '#{e.to_s}' '#{link_url}'"
       end
