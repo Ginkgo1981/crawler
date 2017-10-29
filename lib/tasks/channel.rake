@@ -30,7 +30,8 @@ namespace :channel do
           puts "[crawler] enqueue_links finish 0 '#{Time.now.to_s}' ''"
         end
       rescue Exception => e
-        SlackService.alert "[crawler] enqueue_links error #{count} #{c} #{e.to_s}"  if count % 3 == 0
+        sleep count % 3
+        SlackService.alert "[crawler] enqueue_links error #{count} #{c} #{e.to_s}"
         puts "[crawler] enqueue_links error 0 '#{e.to_s}' '#{c}'"
       end
     end
@@ -64,7 +65,8 @@ namespace :channel do
           # sleep 10
         end
       rescue Exception => e
-        SlackService.alert "[crawler] fetch_and_enqueue_company_job_json error #{count} #{link_url} #{e.to_s}"  if count % 3 == 0
+        sleep count % 3
+        SlackService.alert "[crawler] fetch_and_enqueue_company_job_json error #{count} #{link_url} #{e.to_s}"
         puts "[crawler] dequeue fail 0 '#{e.to_s}' '#{link_url}'"
       end
     end
