@@ -65,7 +65,6 @@ class Js91jobCampus < Analyzer
       json
     rescue Exception => e
       puts "[crawler] get_content #{self.class.to_s} 1 '#{e.to_s}' '#{url}'"
-    end9
     end
   end
 end
